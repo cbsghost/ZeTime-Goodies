@@ -1,26 +1,13 @@
-Package: com.github.cbsghost.ZeTime-Goodies
 Name: ZeTime Goodies
-Depends: mobilesubstrate
+Package: com.github.cbsghost.zetime-goodies
+Depends: mobilesubstrate, firmware (>= 8.0)
 Version: 0.0.2
 Architecture: iphoneos-arm
-Section: Tweaks
+Description: ZeTime app with extended features.
+Homepage: https://github.com/cbsghost/ZeTime-Goodies
 Maintainer: CbS Ghost <cbsghost@gmail.com>
 Author: CbS Ghost <cbsghost@gmail.com>
-Description: ZeTime app with extended features.
- .
- CHANGELOG
- .
- 0.0.2
- Hotfix: detect both PNG and JPEG files properly.
- .
- 0.0.1
- Initial alpha release.
- Integrate with zetime.daap.dk. Thanks to Kasper Bjerby for his awesome website.
- .
- ---
- License under LGPL-3.0.
- Source code are available at: https://github.com/cbsghost/ZeTime-Goodies
- .
-Homepage: https://github.com/cbsghost/ZeTime-Goodies
+Section: Tweaks
 Copyright: 2017 CbS Ghost <cbsghost@gmail.com>
 License: LGPL-3.0
+dev: cbsghost
