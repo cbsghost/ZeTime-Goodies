@@ -1,0 +1,23 @@
+Package: com.github.cbsghost.ZeTime-Goodies
+Name: ZeTime Goodies
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Section: Tweaks
+Maintainer: CbS Ghost <cbsghost@gmail.com>
+Author: CbS Ghost <cbsghost@gmail.com>
+Description: ZeTime app with extended features.
+ .
+ CHANGELOG
+ .
+ 0.0.1
+ Initial alpha release.
+ Integrate with zetime.daap.dk. Thanks to Kasper Bjerby for his awesome website.
+ .
+ ---
+ License under LGPL-3.0.
+ Source code are available at: https://github.com/cbsghost/ZeTime-Goodies
+ .
+Homepage: https://github.com/cbsghost/ZeTime-Goodies
+Copyright: 2017 CbS Ghost <cbsghost@gmail.com>
+License: LGPL-3.0

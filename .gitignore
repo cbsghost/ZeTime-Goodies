@@ -1,0 +1,19 @@
+# Theos .gitignore
+#
+# Create by CbS Ghost <cbsghost@gmail.com>
+# https://github.com/cbsghost
+
+## Class dump files
+class-dump/
+Class-dump/
+Class-Dump/
+
+## Build generated
+obj/
+packages/
+.theos/
+
+## OS misc
+Thumbs.db
+._*
+.DS_Store

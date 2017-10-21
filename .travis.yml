@@ -1,0 +1,44 @@
+# Theos .travis.yml
+#
+# Create by CbS Ghost <cbsghost@gmail.com>
+# https://github.com/cbsghost
+
+os: osx
+osx_image: xcode8.3
+language: objective-c
+sudo: false
+
+env:
+  global:
+    # Export $THEOS path
+    - THEOS=theos
+
+before_install:
+  # Update Homebrew and install dependencies
+  # Theos needs an old version of dpkg package
+  - brew update
+  - brew install ldid
+  - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/7a4dabfc1a2acd9f01a1670fde4f0094c4fb6ffa/Formula/dpkg.rb
+  - brew pin dpkg
+
+  # Install Theos
+  - git clone --recursive git://github.com/theos/theos.git theos
+
+script:
+  # Build
+  - make package
+
+# Deploy process
+before_deploy:
+  - rm -rf packages
+  - make package FINALPACKAGE=1
+
+deploy:
+  provider: releases
+  api_key:
+    secure: f/z0oaLUfCkZFR/6PO9mmEhARY49uyHyfwQwn0rMY6WONeiDWdGfeZ18v+4Pj9LdO1Il7LW+S1k3qxv9VkjrhYNgx9KjtBywCyZI0yQXuADT8TqxQXL3vfiOolFV5Qf+Y8++ZkslAl2lhH26z8VqvnMMmicKuGke/Es7J38In2ljmxNex700RBO5pszCka5wHy7Wh4BwPxJZgmt2fGDeFQdBtQ8U1So07pzqkTCY4YDvhe7wgj722Mp3Owbta+UQPYX9ikmHuks9LfYNlFFk8XfgQC3Fo9goXy0f+s8Ycz/0kJmHaFvc4yc/VLaTKTsgUd9L5yQnyPLHlRxXllsskXhEelITr8b/MCxAWCTr5L5IjIlpQ+OyGNEq5Qdfn8BlSML3mVlSfuW8j13Oz8OiomnpZfhnkehH0CW15lu8la8uQ+XCdZ/NTkeSWtu7kB4LVmpLoe0vWnSvwXYO/nS4eoE6HZm/SKmp6MLIWZ+e1ISjeM8jn6b1XmYDNSUpNrQxBUP80KyqqRIkjRtbYxE8H2CPPDWVJOIOiZFsfGbefz8hKn6dl05SzsihCXZQ+xrnidBeP6moxg131sGXwrWzpBkdUY0zwNzcjKnARty/fKl1qjHxcwbbsaUiZNtmFm00yfeQH6oSD9a9ddtnXfNtcdt09h08/nqzis0XPbo6iA0=
+  file_glob: true
+  file: "packages/*.deb"
+  skip_cleanup: true
+  on:
+    tags: true
