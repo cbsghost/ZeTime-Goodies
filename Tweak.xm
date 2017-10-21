@@ -124,7 +124,7 @@
         
 	}
 
-	if ([mimeType isEqualToString:@"image/png"]) {
+	if ([mimeType isEqualToString:@"image/png"] || [mimeType isEqualToString:@"image/jpeg"]) {
 
         [%c(APPSShowTips) showLoadingWithMessage:@"Downloading..."];
         
