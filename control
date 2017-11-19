@@ -1,7 +1,7 @@
 Name: ZeTime Goodies
 Package: com.github.cbsghost.zetime-goodies
 Depends: mobilesubstrate, firmware (>= 8.0)
-Version: 0.0.2
+Version: 0.0.3
 Architecture: iphoneos-arm
 Description: ZeTime app with extended features.
 Homepage: https://github.com/cbsghost/ZeTime-Goodies
