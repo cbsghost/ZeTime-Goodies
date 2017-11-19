@@ -6,7 +6,11 @@
 //  Copyright (c) 2017 CbS Ghost. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+
+#import "UIImage-ResizeMagick/UIImage+ResizeMagick.h"
+
 
 @interface APPSShowTips : UIView
 + (void)hidden;
@@ -23,10 +27,11 @@
 
 @interface APPSCustomPhotoViewControl : AppsViewController <WKNavigationDelegate>
 - (void)wallpaperTap;
+- (void)setEditImage:(nullable UIImage *)image;
+- (void)setSendImage:(nullable UIImage *)image;
 
 // Custom methods
 - (void)webViewFailureCallback:(WKWebView *)wkWebView;
-
 @end
 
 %hook APPSCustomPhotoViewControl
@@ -54,7 +59,8 @@
 
     }]];
 
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"zetime.daap.dk" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"zetime.daap.dk" style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction *action) {
 
         // zetime.daap.dk button tapped.
         [%c(APPSShowTips) showLoading];
@@ -65,7 +71,8 @@
                                       @"meta.name = 'viewport'; meta.content = 'width=device-width, user-scalable=no'; "
                                       @"document.getElementsByTagName('head')[0].appendChild(meta);";
         if (self.view.bounds.size.width < 480) {
-            webViewFixWidthJS = [webViewFixWidthJS stringByReplacingOccurrencesOfString:@"width=device-width" withString:@"width=480"];
+            webViewFixWidthJS = [webViewFixWidthJS stringByReplacingOccurrencesOfString:@"width=device-width"
+                                                   withString:@"width=480"];
         }
         WKUserScript *webViewFixWidthUserScript = [[[WKUserScript alloc] initWithSource:webViewFixWidthJS
                                                                          injectionTime:WKUserScriptInjectionTimeAtDocumentEnd
@@ -95,7 +102,8 @@
 }
 
 %new
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
+                                     decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
 {
 	NSURL *url = navigationResponse.response.URL;
 	NSString *mimeType = navigationResponse.response.MIMEType;
@@ -130,11 +138,16 @@
         
         // Set watchface!!
 	    UIImageView *myImageView = MSHookIvar<UIImageView *>(self, "_myImageView");
-		[myImageView sd_setImageWithURL:url
-                     completed:^{
-                     	 [self.navigationController popViewControllerAnimated:YES];
-                         [%c(APPSShowTips) hidden];
-                     }];
+		[myImageView sd_setImageWithURL:url completed:^{
+                                                [UIImage setInterpolationQuality:kCGInterpolationHigh];
+                                                UIImage *resizeImage = [[myImageView image]
+                                                                        resizedImageByMagick:@"240x240#"];
+                                                [self setEditImage:resizeImage];
+                                                [self setSendImage:resizeImage];
+
+                                             	[self.navigationController popViewControllerAnimated:YES];
+                                                [%c(APPSShowTips) hidden];
+                                            }];
         
 		decisionHandler(WKNavigationActionPolicyCancel);
 

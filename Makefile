@@ -16,7 +16,7 @@ TWEAK_TARGET_PROCESS = ZeTime
 
 $(TWEAK_NAME)_FRAMEWORKS += WebKit
 
-$(TWEAK_NAME)_FILES = Tweak.xm
+$(TWEAK_NAME)_FILES = Tweak.xm Bugfix.xm UIImage-ResizeMagick/UIImage+ResizeMagick.m
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
