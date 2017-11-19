@@ -16,7 +16,7 @@ Built With
 
 Installing
 ----------
-.. note:: A jailbroken iPhone is required.
+    .. note:: A jailbroken iPhone is required.
 
 Open Cydia app and search for ``ZeTime Goodies``.
 
