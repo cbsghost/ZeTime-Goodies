@@ -9,7 +9,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 
 
-// Fix a bug that official ZeTime app called a API in CBCentralManager where only exists on iOS 10 or later
+// Fix a bug that official ZeTime app calls an API in CBCentralManager where only exists on iOS 10 or later
 %hook CBCentralManager
 - (instancetype)init
 {
