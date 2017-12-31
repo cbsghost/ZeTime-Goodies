@@ -11,7 +11,7 @@ sudo: false
 env:
   global:
     # Export $THEOS path
-    - THEOS=theos
+    - THEOS="theos"
 
 before_install:
   # Update Homebrew and install dependencies
@@ -23,7 +23,7 @@ before_install:
   - env PERL_MM_USE_DEFAULT=1 cpan IO::Compress::Lzma
 
   # Install Theos
-  - git clone --recursive git://github.com/theos/theos.git theos
+  - git clone --recursive git://github.com/theos/theos.git "$THEOS"
 
 script:
   # Build
