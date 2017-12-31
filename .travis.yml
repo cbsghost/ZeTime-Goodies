@@ -20,7 +20,7 @@ before_install:
   - brew install ldid
   - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/7a4dabfc1a2acd9f01a1670fde4f0094c4fb6ffa/Formula/dpkg.rb
   - brew pin dpkg
-  - cpan -I IO::Compress::Lzma
+  - env PERL_MM_USE_DEFAULT=1 cpan -I IO::Compress::Lzma
 
   # Install Theos
   - git clone --recursive git://github.com/theos/theos.git theos
