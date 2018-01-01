@@ -151,6 +151,8 @@
         
 		decisionHandler(WKNavigationActionPolicyCancel);
 
+        return;
+
 	}
 	
     decisionHandler(WKNavigationActionPolicyAllow);
