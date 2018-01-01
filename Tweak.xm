@@ -85,10 +85,10 @@
         communityWebViewConfiguration.userContentController = communityWebViewUserContentController;
 
         // Alloc webview
-		WKWebView *communityWebView = [[[WKWebView alloc] initWithFrame:self.view.bounds
-		                                                  configuration:communityWebViewConfiguration] autorelease];
-		communityWebView.navigationDelegate = self;
-		[communityWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://zetime.daap.dk/"]]];
+        WKWebView *communityWebView = [[[WKWebView alloc] initWithFrame:self.view.bounds
+                                                          configuration:communityWebViewConfiguration] autorelease];
+        communityWebView.navigationDelegate = self;
+        [communityWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://zetime.daap.dk/"]]];
         [communityWebViewController.view addSubview: communityWebView];
         communityWebViewController.title = @"zetime.daap.dk";
         
@@ -98,19 +98,19 @@
 
     // Present action sheet
     [self.navigationController presentViewController:actionSheet animated:YES completion:nil];
-	
+    
 }
 
 %new
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
                                      decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
 {
-	NSURL *url = navigationResponse.response.URL;
-	NSString *mimeType = navigationResponse.response.MIMEType;
+    NSURL *url = navigationResponse.response.URL;
+    NSString *mimeType = navigationResponse.response.MIMEType;
 
     // Simple url redirecting prevention
-	if (![navigationResponse.response.URL.host isEqualToString:@"zetime.daap.dk"]) {
-		UIAlertController *redirectAlert = [UIAlertController alertControllerWithTitle:@"Redirection Error"
+    if (![navigationResponse.response.URL.host isEqualToString:@"zetime.daap.dk"]) {
+        UIAlertController *redirectAlert = [UIAlertController alertControllerWithTitle:@"Redirection Error"
                                                               message:@"You've been redirected to an unexpected website.\n"
                                                                       @"This error message is to prevent your ZeTime app from malicious code injection."
                                                               preferredStyle:UIAlertControllerStyleAlert];
@@ -129,65 +129,67 @@
         [self.navigationController presentViewController:redirectAlert animated:YES completion:nil];
 
         decisionHandler(WKNavigationActionPolicyCancel);
-        
-	}
 
-	if ([mimeType isEqualToString:@"image/png"] || [mimeType isEqualToString:@"image/jpeg"]) {
+        return;
+        
+    }
+
+    if ([mimeType isEqualToString:@"image/png"] || [mimeType isEqualToString:@"image/jpeg"]) {
 
         [%c(APPSShowTips) showLoadingWithMessage:@"Downloading..."];
         
         // Set watchface!!
-	    UIImageView *myImageView = MSHookIvar<UIImageView *>(self, "_myImageView");
-		[myImageView sd_setImageWithURL:url completed:^{
+        UIImageView *myImageView = MSHookIvar<UIImageView *>(self, "_myImageView");
+        [myImageView sd_setImageWithURL:url completed:^{
                                                 [UIImage setInterpolationQuality:kCGInterpolationHigh];
                                                 UIImage *resizeImage = [[myImageView image]
                                                                         resizedImageByMagick:@"240x240#"];
                                                 [self setEditImage:resizeImage];
                                                 [self setSendImage:resizeImage];
 
-                                             	[self.navigationController popViewControllerAnimated:YES];
+                                                 [self.navigationController popViewControllerAnimated:YES];
                                                 [%c(APPSShowTips) hidden];
                                             }];
         
-		decisionHandler(WKNavigationActionPolicyCancel);
+        decisionHandler(WKNavigationActionPolicyCancel);
 
         return;
 
-	}
-	
+    }
+    
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 %new
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-	// Set website's title
-	self.navigationController.navigationBar.topItem.title = webView.title;
-	[%c(APPSShowTips) hidden];
+    // Set website's title
+    self.navigationController.navigationBar.topItem.title = webView.title;
+    [%c(APPSShowTips) hidden];
 }
 
 %new
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-	// Filter out unnecessary error
-	if (error.code < 0 && error.code != NSURLErrorCancelled && error.code != NSURLErrorUserCancelledAuthentication) {
-		[self webViewFailureCallback:webView];
-	}
+    // Filter out unnecessary error
+    if (error.code < 0 && error.code != NSURLErrorCancelled && error.code != NSURLErrorUserCancelledAuthentication) {
+        [self webViewFailureCallback:webView];
+    }
 }
 
 %new
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-	// Filter out unnecessary error
+    // Filter out unnecessary error
     if (error.code < 0 && error.code != NSURLErrorCancelled && error.code != NSURLErrorUserCancelledAuthentication) {
-		[self webViewFailureCallback:webView];
-	}
+        [self webViewFailureCallback:webView];
+    }
 }
 
 %new
 - (void)webViewFailureCallback:(WKWebView *)wkWebView
 {
-	UIAlertController *failAlert = [UIAlertController alertControllerWithTitle:@"Connection Error"
+    UIAlertController *failAlert = [UIAlertController alertControllerWithTitle:@"Connection Error"
                                                               message:@"Unable to connect to zetime.daap.dk. :("
                                                               preferredStyle:UIAlertControllerStyleAlert];
     
@@ -208,7 +210,7 @@
         if (wkWebView.URL == nil) {
             [wkWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://zetime.daap.dk/"]]];
         } else {
-        	[wkWebView reload];
+            [wkWebView reload];
         }
         
     }]];
